@@ -7,13 +7,12 @@
 
 import Foundation
 
-@Observable
-class Friend: Codable {
-    enum CodingKeys: String, CodingKey {
-        case _id = "id"
-        case _name = "name"
-    }
+struct Friend: Codable, Identifiable, Hashable {
+//    enum CodingKeys: String, CodingKey {
+//        case _id = "id"
+//        case _name = "name"
+//    }
     
-    var id = ""
-    var name = ""
+    let id: String
+    let name: String
 }
