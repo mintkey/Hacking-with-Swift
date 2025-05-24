@@ -26,6 +26,8 @@ struct ExpensesView: View {
                     Text(expense.amount, format: .currency(code: expense.currencyCode))
                         .expenseStyle(expense)
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityHint("\(expense.type) expense")
             }
             .onDelete(perform: removeExpenses)
         }

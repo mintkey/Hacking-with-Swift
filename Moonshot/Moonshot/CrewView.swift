@@ -32,6 +32,7 @@ struct CrewView: View {
                                     Capsule()
                                         .strokeBorder(.white, lineWidth: 1)
                                 )
+                                .accessibilityHidden(true)
 
                             VStack(alignment: .leading) {
                                 Text(crewMember.astronaut.name)

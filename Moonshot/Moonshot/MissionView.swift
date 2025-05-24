@@ -35,11 +35,13 @@ struct MissionView: View {
                         width * 0.6
                     }
                     .padding(.top)
+                    .accessibilityHidden(true)
                 
                 Text(mission.formattedLaunchDate)
                     .font(.title3)
                     .foregroundStyle(.white.opacity(0.8))
                     .padding(.top)
+                    .accessibilityLabel(mission.formattedLaunchDate == "N/A" ? "Never launched" : "Launched on \(mission.formattedLaunchDate)")
                 
                 VStack(alignment: .leading) {
                     Divider()
@@ -60,6 +62,7 @@ struct MissionView: View {
                 
                 CrewView(crew: crew)
             }
+            .accessibilityLabel("\(mission.displayName) mission details")
         }
         .navigationTitle(mission.displayName)
         .navigationBarTitleDisplayMode(.inline)

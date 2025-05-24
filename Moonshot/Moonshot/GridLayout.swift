@@ -27,18 +27,23 @@ struct GridLayout: View {
                                 .scaledToFit()
                                 .frame(width: 100, height: 100)
                                 .padding()
+                                .accessibilityHidden(true)
 
                             VStack {
                                 Text(mission.displayName)
                                     .font(.headline)
                                     .foregroundStyle(.white)
+                                    .accessibilityLabel(Text(" \(mission.displayName) mission"))
                                 Text(mission.formattedLaunchDate)
                                     .font(.caption)
                                     .foregroundStyle(.white.opacity(0.5))
+                                    .accessibilityLabel(Text(" Launch date: \(mission.formattedLaunchDate)"))
                             }
                             .padding(.vertical)
                             .frame(maxWidth: .infinity)
                             .background(.lightBackground)
+                            .accessibilityElement(children: .combine)
+                            .accessibilityAddTraits(.isButton)
                         }
                         .clipShape(.rect(cornerRadius: 10))
                         .overlay(
@@ -49,6 +54,7 @@ struct GridLayout: View {
                 }
             }
             .padding([.horizontal, .bottom])
+            .accessibilityLabel("List of moon missions")
         }
     }
 }
