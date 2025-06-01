@@ -18,7 +18,7 @@ struct CardView: View {
     @State private var offset = CGSize.zero
     @State private var dragDirection: DragDirection = .none
     let card: Card
-    var removal: (() -> Void)? = nil
+    var removal: ((Bool) -> Void)? = nil
 
     var body: some View {
         ZStack {
@@ -70,7 +70,11 @@ struct CardView: View {
                 }
                 .onEnded { _ in
                     if abs(offset.width) > 100 {
-                        removal?()
+                        if dragDirection == .right {
+                            removal?(true)
+                        } else if dragDirection == .left {
+                            removal?(false)
+                        }
                     } else {
                         offset = .zero
                         dragDirection = .none
