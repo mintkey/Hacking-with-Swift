@@ -6,34 +6,45 @@
 //
 
 import CoreImage
-import CoreImage.CIFilterBuiltins
-import StoreKit
-import SwiftUI
+import MapKit
 import PhotosUI
+import SwiftUI
 
 struct ContentView: View {
-    @AppStorage("filterCount") var filterCount = 0
-    @Environment(\.requestReview) var requestReview
-    @State private var processedImage: Image?
-    @State private var filterIntensity = 0.5
-    @State private var filterRadius = 0.25
+    @State private var people: [Person] = []
     @State private var selectedItem: PhotosPickerItem?
-    @State private var currentFilter: CIFilter = CIFilter.sepiaTone()
-    @State private var showingFilters = false
-    let context = CIContext()
+    @State private var showingAddPerson = false
+    let savePath = URL.documentsDirectory.appending(path: "SavedPeople")
+    let locationFetcher = LocationFetcher()
     
     var body: some View {
         NavigationStack {
-            NamesAndFacesView()
+            NamesAndFacesView(people: people)
                 .navigationTitle("Name to a Face")
                 .toolbar {
-                    NavigationLink {
-                        AddPersonView()
-                    } label: {
-                        Text("Add person")
+                    Button("Add person") {
+                        showingAddPerson = true
                     }
-                    
                 }
+                .sheet(isPresented: $showingAddPerson) {
+                    AddPersonView(people: $people, location: locationFetcher.lastKnownLocation ?? nil)
+                }
+        }
+        .onAppear {
+            if people.isEmpty {
+                loadPeople()
+            }
+            
+            locationFetcher.start()
+        }
+    }
+    
+    func loadPeople() {
+        do {
+            let data = try Data(contentsOf: savePath)
+            people = try JSONDecoder().decode([Person].self, from: data)
+        } catch {
+            people = []
         }
     }
 }
